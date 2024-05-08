@@ -20,8 +20,7 @@ tank_img = pygame.image.load(os.path.join(assets_path, 'images', 'tank_img.jpg')
 
 
 scaled_tank_img = pygame.transform.scale(tank_img, (60, 60))  
-
-dt = 2  
+  
 
 running = True
 while running:
@@ -38,13 +37,13 @@ while running:
     dx = 0
     dy = 0
     if keys[pygame.K_w]:
-        dy -= 5 * dt
+        dy -= 5 * tank.speed
     if keys[pygame.K_s]:
-        dy += 5 * dt
+        dy += 5 * tank.speed
     if keys[pygame.K_a]:
-        dx -= 5 * dt
+        dx -= 5 * tank.speed
     if keys[pygame.K_d]:
-        dx += 5 * dt
+        dx += 5 * tank.speed
 
     tank.move(dx, dy)  
     

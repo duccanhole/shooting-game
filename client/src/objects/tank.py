@@ -1,7 +1,7 @@
 import math
 
 class Tank:
-    def __init__(self, x, y, speed=50, state=True):
+    def __init__(self, x, y, speed=0.5, state=True):
         self.position = {'x': x, 'y': y}
         self.speed = speed
         self.state = state

@@ -1,4 +1,5 @@
 import socket
+import json
 
 from signal import signal, SIGPIPE, SIG_DFL   
 signal(SIGPIPE,SIG_DFL) 
@@ -19,8 +20,8 @@ connection, client_address = server_socket.accept()
 while True:
     try:
         msg = connection.recv(1024)
-        if len(msg.decode()) > 0:
-            print("recieve: " + msg.decode())
-            connection.send(f"[Server receive _ {msg.decode()}]".encode())
+        data = json.loads(msg.decode())
+        if len(data) > 0:
+            print("recieve: ", data)
     except:
         connection.close()

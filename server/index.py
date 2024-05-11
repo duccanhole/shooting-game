@@ -18,6 +18,7 @@ print("Server is listening for connections...")
 connection, client_address = server_socket.accept()
 
 while True:
+    print("listen connection: ", client_address)
     try:
         msg = connection.recv(1024)
         connection.send(msg)

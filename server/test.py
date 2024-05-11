@@ -8,6 +8,8 @@ client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server_address = ("localhost", 8080)
 client_socket.connect(server_address)
 
+print("connect to localhost:8080")
+
 while True:
     user_input = input("Enter something (type ':q' to quit): ")
 
@@ -20,5 +22,5 @@ while True:
         client_socket.send(encode)
         print("You emit:", user_input)
 
-    # msg = client_socket.recv(1024)
-    # print("Recieve data from socket " + msg.decode())
+    msg = client_socket.recv(1024)
+    print("Recieve data from socket " + msg.decode())

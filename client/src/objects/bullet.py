@@ -56,7 +56,6 @@ class Bullet:
             a = desPos[0] - startPos['x']
             b = desPos[1] - startPos['y']
             self.angel = math.degrees(math.acos(a / math.sqrt((a**2) + (b**2))))
-            print(self.angel)
             
             self.bulletX = startPos['x']
             self.bulletY = startPos['y']
@@ -65,3 +64,6 @@ class Bullet:
             self.desPos = desPos
             
             self.isFiring = True
+
+    def getRect(seft): 
+        return pygame.Rect(seft.bulletX, seft.bulletY, 5, 5)

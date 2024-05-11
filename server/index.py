@@ -20,8 +20,9 @@ connection, client_address = server_socket.accept()
 while True:
     try:
         msg = connection.recv(1024)
-        data = json.loads(msg.decode())
-        if len(data) > 0:
-            print("recieve: ", data)
+        connection.send(msg)
+        # data = json.loads(msg.decode())
+        # if len(data) > 0:
+        #     print("recieve: ", data)
     except:
         connection.close()

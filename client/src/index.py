@@ -1,6 +1,14 @@
 import pygame
 from objects.tank import Tank
 import os
+import socket
+
+# # Create a TCP/IP socket
+# client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+# # Connect the socket to the server's address and port
+# server_address = ("localhost", 8080)
+# client_socket.connect(server_address)
 
 pygame.init()
 
@@ -36,29 +44,6 @@ while running:
     
     tank.addMovement()
     tank.addShooting()
-
-    # keys = pygame.key.get_pressed()
-    # dx = 0
-    # dy = 0
-    # if keys[pygame.K_w]:
-    #     dy -= 5 * dt
-    # if keys[pygame.K_s]:
-    #     dy += 5 * dt
-    # if keys[pygame.K_a]:
-    #     dx -= 5 * dt
-    # if keys[pygame.K_d]:
-    #     dx += 5 * dt
-
-    # tank.move(dx, dy)  
-    
-    # mouse_x, mouse_y = pygame.mouse.get_pos()
-    
-    # angle = tank.get_angle(tank.position['x'], tank.position['y'], mouse_x, mouse_y)
-    
-    
-    # rotated_tank = pygame.transform.rotate(scaled_tank_img, -angle)
-    # rotated_rect = rotated_tank.get_rect(center=(tank.position['x'], tank.position['y']))
-    # screen.blit(rotated_tank, rotated_rect)
     
     pygame.display.flip()
     clock.tick(60)

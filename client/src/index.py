@@ -10,7 +10,7 @@ screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption("Hello pygame")
 clock = pygame.time.Clock()
 
-tank = Tank(screen_width / 2, screen_height / 2)
+tank = Tank(pygame, screen ,screen_width / 2, screen_height / 2)
 
 
 assets_path = os.path.join(os.path.dirname(__file__), '..', 'assets')
@@ -32,6 +32,9 @@ while running:
 
     
     screen.blit(scaled_tank_img, (tank.position['x'] - scaled_tank_img.get_width() / 2, tank.position['y'] - scaled_tank_img.get_height() / 2))
+    
+    tank.addMovement()
+    tank.addShooting()
 
     keys = pygame.key.get_pressed()
     dx = 0

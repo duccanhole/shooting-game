@@ -29,39 +29,38 @@ class Tank:
         self.network = network
 
     def addMovement(self, curr):
-        # self.context.draw.circle(self.screen, (255,0,0), (self.tankX, self.tankY), 15)
-        xData = self.tankX
-        yData = self.tankY
         if self.player == curr:
             keys = self.context.key.get_pressed()
             if keys[pygame.K_a] and self.tankX >= 0:
                 # self.tankX -= self.speed
-                xData -= self.speed
+                self.tankX -= self.speed
             if keys[pygame.K_d] and self.tankX <= self.screen.get_width():
                 # self.tankX += self.speed
-                xData += self.speed
+                self.tankX += self.speed
             if keys[pygame.K_w] and self.tankY >= 0:
                 # self.tankY -= self.speed
-                yData -= self.speed
+                self.tankY -= self.speed
             if keys[pygame.K_s] and self.tankY <= self.screen.get_height():
                 # self.tankY += self.speed
-                yData += self.speed
+                self.tankY += self.speed
                 # if xData != self.tankX or yData != self.tankY:
                 #     self.updateMovement(xData, yData)
                 #     print('emit data')
-        sendData = {
-            "action": GAME_ACTION.MOVE.value,
-            "data": {"player": self.player, "x": xData, "y": yData},
-        }
-        self.network.send(sendData)
-        receiveData = decode(self.network.client.recv(2048))
-        if len(receiveData) > 0:
-            if receiveData.get("action") == GAME_ACTION.MOVE.value:
-                data = receiveData.get("data")
-                print(
-                    f"update player {self.player} at position: ({data['x']}, {data['y']})"
-                )
-                self.updateMovement(data["x"], data["y"])
+            self.updateMovement(self.tankX, self.tankY)
+        # sendData = {
+        #     "action": GAME_ACTION.MOVE.value,
+        #     "data": {"player": self.player, "x": xData, "y": yData},
+        # }
+        # receiveData = self.network.send(sendData)
+        # if self.player != curr:
+        #     if len(receiveData) > 0:
+        #         if receiveData.get("action") == GAME_ACTION.MOVE.value:
+        #             data = receiveData.get("data")
+        #             print("move, from receive data")
+        #             self.updateMovement(data["x"], data["y"])
+        #     else:
+        #         print(f"update player {self.player} at ({xData}, {yData})")
+        #         self.updateMovement(xData, yData)
 
     def updateMovement(self, x: int, y: int):
         self.tankX = x

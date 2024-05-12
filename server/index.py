@@ -61,22 +61,30 @@ except socket.error as e:
 s.listen(2)
 print("Waiting for a connection, Server Started")
 
+MOVE_DATA = [{"player": 0, "x": 20, "y": 20}, {"player": 1, "x": 680, "y": 480}]
 
-def threaded_client(conn: socket):
+
+def threaded_client(conn: socket, addr, player: int):
     try:
+        conn.send(encode({"action": 3, "data": {"currPlayer": player}}))
         while True:
             try:
-                # Send data to the client
-                conn.sendall(encode({"msg": "hello from server"}))
-
                 # Receive data from the client
                 data = conn.recv(2048)
-
                 # Check if data is received
                 if data:
-                    print("Received data: ", decode(data))
-                    conn.sendall(data)
-                    print("Send data to all client")
+                    decodeData = decode(data)
+                    MOVE_DATA[player] = decodeData["data"]
+                    print("Received data from", player)
+                    print(decodeData)
+                    sendData = encode(
+                        {
+                            "action": 0,
+                            "data": MOVE_DATA[0] if player == 1 else MOVE_DATA[1]
+                        }
+                    )
+                    conn.sendall(sendData)
+                    print("Send data to ", player)
                 else:
                     # No data received, client closed the connection
                     break
@@ -96,5 +104,5 @@ player = 0
 while True:
     conn, addr = s.accept()
     print("Connected to:", addr)
-    start_new_thread(threaded_client, (conn,))
+    start_new_thread(threaded_client, (conn, addr, player))
     player += 1

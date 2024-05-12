@@ -6,20 +6,23 @@ from utils.encode import encode
 class Network:
     def __init__(self) -> None:
         self.client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.connect()
+        self.startData = self.connect()
         
     def connect(self): 
         try:
             self.client.connect(("localhost", 8080))
-            # return decode(self.client.recv(2048))
+            return decode(self.client.recv(2048))
         except:
             pass
         
     def send(self, data):
         try:
             self.client.send(encode(data))
-            # return decode(self.client.recv(2048))
+            return decode(self.client.recv(2048))
         except socket.error as e:
             print(e)
+            
+    def getStartData(self):
+        return self.startData
 
             

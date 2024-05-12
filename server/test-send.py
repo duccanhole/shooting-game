@@ -19,8 +19,5 @@ while True:
     else:
         data = {"data": user_input}
         encode = json.dumps(data).encode()
-        client_socket.send(encode)
+        client_socket.sendall(encode)
         print("You emit:", user_input)
-
-    msg = client_socket.recv(1024)
-    print("Recieve data from socket " + msg.decode())

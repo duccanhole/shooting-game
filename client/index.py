@@ -6,6 +6,8 @@ from objects.tank import Tank
 from utils.decode import decode
 
 def startGame():
+    currplayer = input("enter number : ")
+    currplayer = int(currplayer)
     pygame.init()
 
     screen_width = 700
@@ -22,7 +24,7 @@ def startGame():
         network,
         20,
         20,
-        "tank1",
+        1,
     )
     tank2 = Tank(
         pygame,
@@ -30,7 +32,7 @@ def startGame():
         network,
         screen_width - 20,
         screen_height - 20,
-        "tank2",
+        2,
     )
     try:
         running = True
@@ -42,10 +44,10 @@ def startGame():
 
             screen.fill("white")
 
-            tank1.addMovement()
+            tank1.addMovement(currplayer)
             # tank1.addShooting()
 
-            tank2.addMovement()
+            # tank2.addMovement(currplayer)
             # tank2.addHitting(tank1.bullet)
 
             pygame.display.flip()

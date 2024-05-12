@@ -1,9 +1,11 @@
 import socket
 import pygame
 
+from network import Network
 from game_action import GAME_ACTION
 from objects.bullet import Bullet
 from utils.encode import encode
+from utils.decode import decode
 
 
 class Tank:
@@ -11,7 +13,7 @@ class Tank:
         self,
         context: pygame,
         screen: pygame.Surface,
-        client_socket: socket,
+        network: Network,
         x,
         y,
         name="tank",
@@ -24,7 +26,7 @@ class Tank:
         self.bullet = Bullet(context, screen)
         self.hp = 100
         self.name = name
-        self.client_socket = client_socket
+        self.network = network
 
     def addMovement(self):
         # self.context.draw.circle(self.screen, (255,0,0), (self.tankX, self.tankY), 15)
@@ -43,13 +45,21 @@ class Tank:
         if keys[pygame.K_s] and self.tankY <= self.screen.get_height():
             # self.tankY += self.speed
             yData += self.speed
-        if xData != self.tankX or yData != self.tankY:
-            print('emit data')
-            # sendData = {
-            #     "action": GAME_ACTION.MOVE.value,
-            #     "data": {"name": self.name, "x": xData, "y": yData},
-            # }
-            # self.client_socket.send(encode(sendData))
+            # if xData != self.tankX or yData != self.tankY:
+            #     self.updateMovement(xData, yData)
+            #     print('emit data')
+        sendData = {
+            "action": GAME_ACTION.MOVE.value,
+            "data": {"name": self.name, "x": xData, "y": yData},
+        }
+        self.network.send(sendData)
+        receiveData = decode(self.network.client.recv(2048))
+        if len(receiveData) > 0:
+            if receiveData.get("action") == GAME_ACTION.MOVE.value:
+                data = receiveData.get("data")
+                if data["name"] == self.name:
+                    print(f"update {self.name} at position: (${data['x']}, ${data['y']})")
+                    self.updateMovement(data["x"], data["y"])
 
     def updateMovement(self, x: int, y: int):
         self.tankX = x

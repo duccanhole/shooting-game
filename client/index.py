@@ -5,13 +5,41 @@ from game_action import GAME_ACTION
 from objects.tank import Tank
 from utils.decode import decode
 from utils.encode import encode
+MAP = [
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1],
+    [1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1],
+    [1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1],
+    [1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 1],
+    [1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1],
+    [1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1],
+    [1, 0, 1, 1, 1, 0, 1, 0, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1],
+    [1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1],
+    [1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 1],
+    [1, 0, 1, 0, 0, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+    [1, 0, 1, 0, 0, 1, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1],
+    [1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1],
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1],
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+]
+def drawMap(screen):
+    
+    CELL_SIZE = 40
+    
+    WHITE = (255, 255, 255)
+    GRAY = (150, 150, 150)
+    
+    for y, row in enumerate(MAP):
+        for x, cell in enumerate(row):
+            if cell == 1:
+                pygame.draw.rect(screen, GRAY, (x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE))
 
 
 def startGame():
     pygame.init()
 
-    screen_width = 700
-    screen_height = 500
+    screen_width = 800
+    screen_height = 600
     screen = pygame.display.set_mode((screen_width, screen_height))
     pygame.display.set_caption("Shooting game")
     clock = pygame.time.Clock()
@@ -25,16 +53,16 @@ def startGame():
     tank0 = Tank(
         screen,
         network,
-        20,
-        20,
+        60,
+        60,
         0,
         currPlayer
     )
     tank1 = Tank(
         screen,
         network,
-        screen_width - 20,
-        screen_height - 20,
+        screen_width - 60,
+        screen_height - 60,
         1,
         currPlayer
     )
@@ -47,11 +75,13 @@ def startGame():
                     pygame.quit()
 
             screen.fill("white")
+            
+            drawMap(screen)
 
-            tank0.addMovement()
+            tank0.addMovement(MAP)
             tank0.addShooting()
 
-            tank1.addMovement()
+            tank1.addMovement(MAP)
             tank1.addShooting()
             # tank2.addHitting(tank1.bullet)
 

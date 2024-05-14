@@ -61,8 +61,8 @@ def startGame():
     tank1 = Tank(
         screen,
         network,
-        screen_width - 20,
-        screen_height - 20,
+        screen_width - 60,
+        screen_height - 60,
         1,
         currPlayer
     )

@@ -33,7 +33,7 @@ class Tank:
         
         
     def checkCollision(self, new_x, new_y, MAP):
-        tank_rect = pygame.Rect(new_x, new_y, self.width, self.height)
+        tank_rect = pygame.Rect(new_x, new_y, self.width+10, self.height+10)
         for y, row in enumerate(MAP):
             for x, cell in enumerate(row):
                 if cell == 1:
@@ -61,11 +61,12 @@ class Tank:
             
             if not self.checkCollision(new_x, new_y, MAP):
                 self.updateMovement(new_x, new_y)
+            self.updateMovement(self.tankX, self.tankY)
             
     def updateMovement(self, x: int, y: int):
         self.tankX = x
         self.tankY = y
-        pygame.draw.circle(self.screen, (255, 0, 0), (self.tankX, self.tankY), 15)
+        pygame.draw.circle(self.screen, (255, 0, 0), (self.tankX+15, self.tankY+15), 15)
 
     def addShooting(sefl):
         if sefl.player == sefl.currPlayer:

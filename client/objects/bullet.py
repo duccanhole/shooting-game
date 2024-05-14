@@ -3,8 +3,7 @@ import pygame
 
 
 class Bullet:
-    def __init__(self, context: pygame, screen: pygame.Surface, speed = 10) -> None:
-        self.context = context
+    def __init__(self, screen: pygame.Surface) -> None:
         self.screen = screen
         self.bulletX = 0
         self.bulletY = 0
@@ -12,13 +11,13 @@ class Bullet:
         self.angel = 0
         self.startPos = {'x': 0, 'y': 0}
         self.desPos = [0, 0]
-        self.speed = speed
+        self.speed = 10
         
     def addFireAction(self):
         if self.isFiring: 
             if self.bulletX <= 0 or self.bulletX >= self.screen.get_width() or self.bulletY <= 0 or self.bulletY >= self.screen.get_height():
-                # self.bulletX = self.startPos['x']
-                # self.bulletY = self.startPos['y']
+                self.bulletX = 0
+                self.bulletY = 0
                 self.isFiring = False 
             else: 
                 dx = self.desPos[0] - self.startPos['x']
@@ -49,10 +48,11 @@ class Bullet:
                     
                 self.bulletX += speedX
                 self.bulletY += speedY
-            self.context.draw.circle(self.screen, (255,0,0), (self.bulletX, self.bulletY), 5)
+                pygame.draw.circle(self.screen, (255,0,0), (self.bulletX, self.bulletY), 5)
     
     def fire(self, startPos: dict, desPos: tuple):
         if self.isFiring == False:
+            print('start fire ...')
             a = desPos[0] - startPos['x']
             b = desPos[1] - startPos['y']
             self.angel = math.degrees(math.acos(a / math.sqrt((a**2) + (b**2))))
@@ -67,3 +67,10 @@ class Bullet:
 
     def getRect(seft): 
         return pygame.Rect(seft.bulletX, seft.bulletY, 5, 5)
+    
+    def update(self, x: int, y: int): 
+        self.bulletX = x
+        self.bulletY = y
+        pygame.draw.circle(self.screen, (255,0,0), (self.bulletX, self.bulletY), 5)
+        
+            

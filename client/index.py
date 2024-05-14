@@ -53,20 +53,20 @@ def startGame():
     print(f"Your player id {currPlayer}")
 
     tank0 = Tank(
-        pygame,
         screen,
         network,
         60,
         60,
         0,
+        currPlayer
     )
     tank1 = Tank(
-        pygame,
         screen,
         network,
         screen_width - 20,
         screen_height - 20,
         1,
+        currPlayer
     )
     try:
         running = True
@@ -80,10 +80,11 @@ def startGame():
             
             drawMap(screen)
 
-            tank0.addMovement(currPlayer)
-            # tank1.addShooting()
+            tank0.addMovement()
+            tank0.addShooting()
 
-            tank1.addMovement(currPlayer)
+            tank1.addMovement()
+            tank1.addShooting()
             # tank2.addHitting(tank1.bullet)
 
             sendMoveData = {
@@ -98,11 +99,27 @@ def startGame():
             if len(receiveMoveData) > 0:
                 if receiveMoveData.get("action") == GAME_ACTION.MOVE.value:
                     data = receiveMoveData.get("data")
-                    print("move, from receive data")
                     if data["player"] == 0:
                         tank0.updateMovement(data["x"], data["y"])
                     else:
                         tank1.updateMovement(data["x"], data["y"])
+                        
+            sendBulletData = {
+                "action": GAME_ACTION.FIRE.value,
+                "data": {
+                    "player": 1 if currPlayer == 1 else 0,
+                    "x": tank1.bullet.bulletX if currPlayer == 1 else tank0.bullet.bulletX,
+                    "y": tank1.bullet.bulletY if currPlayer == 1 else tank0.bullet.bulletY,
+                }
+            }
+            receiveBulletData = network.send(sendBulletData)
+            if len(receiveBulletData) > 0:
+                if receiveBulletData.get("action") == GAME_ACTION.FIRE.value:
+                    data = receiveBulletData.get("data")
+                    if data["player"] == 0:
+                        tank0.bullet.update(data["x"], data["y"])
+                    else:
+                        tank1.bullet.update(data["x"], data["y"])
 
             pygame.display.flip()
             clock.tick(60)

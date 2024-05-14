@@ -5,15 +5,7 @@ from game_action import GAME_ACTION
 from objects.tank import Tank
 from utils.decode import decode
 from utils.encode import encode
-
-def drawMap(screen):
-    # Kích thước ô vuông trên bản đồ
-    CELL_SIZE = 40
-    # Màu sắc
-    WHITE = (255, 255, 255)
-    GRAY = (150, 150, 150)
-    # Ma trận đại diện cho bản đồ, số 1 là bức tường
-    MAP = [
+MAP = [
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
     [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1],
     [1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1],
@@ -30,7 +22,13 @@ def drawMap(screen):
     [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1],
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
 ]
-    # Vẽ bản đồ
+def drawMap(screen):
+    
+    CELL_SIZE = 40
+    
+    WHITE = (255, 255, 255)
+    GRAY = (150, 150, 150)
+    
     for y, row in enumerate(MAP):
         for x, cell in enumerate(row):
             if cell == 1:
@@ -80,10 +78,10 @@ def startGame():
             
             drawMap(screen)
 
-            tank0.addMovement()
+            tank0.addMovement(MAP)
             tank0.addShooting()
 
-            tank1.addMovement()
+            tank1.addMovement(MAP)
             tank1.addShooting()
             # tank2.addHitting(tank1.bullet)
 

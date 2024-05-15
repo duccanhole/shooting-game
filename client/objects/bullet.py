@@ -52,7 +52,6 @@ class Bullet:
     
     def fire(self, startPos: dict, desPos: tuple):
         if self.isFiring == False:
-            print('start fire ...')
             a = desPos[0] - startPos['x']
             b = desPos[1] - startPos['y']
             self.angel = math.degrees(math.acos(a / math.sqrt((a**2) + (b**2))))

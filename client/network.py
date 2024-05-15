@@ -10,7 +10,7 @@ class Network:
         
     def connect(self): 
         try:
-            self.client.connect(("localhost", 8080))
+            self.client.connect(("192.168.1.16", 8080))
             return decode(self.client.recv(2048))
         except:
             pass
@@ -20,7 +20,8 @@ class Network:
             self.client.send(encode(data))
             return decode(self.client.recv(2048))
         except socket.error as e:
-            print(e)
+            # print(e)
+            return {}
             
     def getStartData(self):
         return self.startData

@@ -9,7 +9,7 @@ from encode import encode
 from decode import decode
 
 
-server = "localhost"
+server = "192.168.1.16"
 port = 8080
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)

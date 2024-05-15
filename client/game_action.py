@@ -6,3 +6,4 @@ class GAME_ACTION(Enum):
     FIRE = 1
     HITTING = 2
     START = 3
+    SCORE = 4

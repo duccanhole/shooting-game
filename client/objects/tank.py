@@ -8,7 +8,23 @@ from utils.encode import encode
 from utils.decode import decode
 
 CELL_SIZE = 40
-
+MAP = [
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1],
+    [1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1],
+    [1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1],
+    [1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 1],
+    [1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1],
+    [1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1],
+    [1, 0, 1, 1, 1, 0, 1, 0, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1],
+    [1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1],
+    [1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 1],
+    [1, 0, 1, 0, 0, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+    [1, 0, 1, 0, 0, 1, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1],
+    [1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1],
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1],
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+]
 class Tank:
     def __init__(
         self,
@@ -22,7 +38,7 @@ class Tank:
         self.screen = screen
         self.tankX = x
         self.tankY = y
-        self.speed = 5
+        self.speed = 2
         self.width = 20 
         self.height = 20
         self.bullet = Bullet(screen)
@@ -68,13 +84,13 @@ class Tank:
         self.tankY = y
         pygame.draw.circle(self.screen, (255, 0, 0), (self.tankX+15, self.tankY+15), 15)
 
-    def addShooting(sefl):
-        if sefl.player == sefl.currPlayer:
-            sefl.bullet.addFireAction()
+    def addShooting(self):
+        if self.player == self.currPlayer:
+            self.bullet.addFireAction(MAP)
             mouse = pygame.mouse.get_pressed()
             if mouse[0]:
                 mouse_pos = pygame.mouse.get_pos()
-                sefl.bullet.fire({"x": sefl.tankX, "y": sefl.tankY}, mouse_pos)
+                self.bullet.fire({"x": self.tankX+ self.width // 2, "y": self.tankY+ self.height // 2}, mouse_pos)
 
     def addHitting(self, bullet: Bullet):
         tankRect = pygame.Rect(self.tankX, self.tankY, 15, 15)

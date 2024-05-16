@@ -94,5 +94,8 @@ class Tank:
         distance1 = math.sqrt((self.tankX + 15 - bullet.bulletX) ** 2 + (self.tankY + 15 - bullet.bulletY) ** 2)
         now = time.time()
         distance2 = math.sqrt((self.tankX + 15 - self.bullet.bulletX) ** 2 + (self.tankY + 15 - self.bullet.bulletY) ** 2)
-        collide = distance1 <= (10 + 5) or (distance2 <= (10 + 5) and (now - self.bullet.fire_time) > 1)
+        isFiredAWhile = False
+        if self.bullet.fire_time != None:
+            isFiredAWhile = (now - self.bullet.fire_time) > 1
+        collide = distance1 <= (10 + 5) or (distance2 <= (10 + 5) and isFiredAWhile)
         return collide

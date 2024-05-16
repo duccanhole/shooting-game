@@ -31,13 +31,13 @@ class Bullet:
         self.angel = 0
         self.startPos = {'x': 0, 'y': 0}
         self.desPos = [0, 0]
-        self.speed = 4
+        self.speed = 6
         self.fire_time = None
         
     def addFireAction(self, MAP):
         if self.isFiring: 
             current_time = time.time()
-            if (current_time - self.fire_time) > 7:  
+            if (current_time - self.fire_time) > 5:  
                 self.isFiring = False
                     
             next_x = self.bulletX + self.speedX

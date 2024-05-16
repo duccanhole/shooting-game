@@ -33,7 +33,7 @@ class Tank:
         self.screen = screen
         self.tankX = x
         self.tankY = y
-        self.speed = 2
+        self.speed = 4
         self.width = 20 
         self.height = 20
         self.bullet = Bullet(screen)
@@ -90,6 +90,7 @@ class Tank:
         # tankRect = pygame.Rect(self.tankX, self.tankY, self.width + 5, self.height + 5)
         # bulletRect = bullet.getRect()
         # collide = bulletRect.colliderect(tankRect)
-        distance = math.sqrt((self.tankX + 15 - bullet.bulletX) ** 2 + (self.tankY + 15 - bullet.bulletY) ** 2)
-        collide = distance <= (10 + 5)
+        distance1 = math.sqrt((self.tankX + 15 - bullet.bulletX) ** 2 + (self.tankY + 15 - bullet.bulletY) ** 2)
+        distance2 = math.sqrt((self.tankX + 15 - self.bullet.bulletX) ** 2 + (self.tankY + 15 - self.bullet.bulletY) ** 2)
+        collide = distance1 <= (10 + 5) or distance2 <= (10 + 5)
         return collide

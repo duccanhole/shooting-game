@@ -10,7 +10,7 @@ class Network:
         
     def connect(self): 
         try:
-            self.client.connect(("192.168.165.112", 8080))
+            self.client.connect(("localhost", 8080))
             return decode(self.client.recv(2048))
         except:
             pass

@@ -1,5 +1,6 @@
 import math
 import socket
+import time
 import pygame
 
 from network import Network
@@ -91,6 +92,7 @@ class Tank:
         # bulletRect = bullet.getRect()
         # collide = bulletRect.colliderect(tankRect)
         distance1 = math.sqrt((self.tankX + 15 - bullet.bulletX) ** 2 + (self.tankY + 15 - bullet.bulletY) ** 2)
+        now = time.time()
         distance2 = math.sqrt((self.tankX + 15 - self.bullet.bulletX) ** 2 + (self.tankY + 15 - self.bullet.bulletY) ** 2)
-        collide = distance1 <= (10 + 5) or distance2 <= (10 + 5)
+        collide = distance1 <= (10 + 5) or (distance2 <= (10 + 5) and (now - self.bullet.fire_time) > 1)
         return collide

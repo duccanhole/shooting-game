@@ -12,7 +12,7 @@ class Bullet:
         self.angel = 0
         self.startPos = {'x': 0, 'y': 0}
         self.desPos = [0, 0]
-        self.speed = 1
+        self.speed = 4
         self.fire_time = None
         
     def addFireAction(self, MAP):
@@ -32,27 +32,26 @@ class Bullet:
                     if abs(self.speedX) > abs(self.speedY):  
                         print("(" + str(self.speedX) + "," + str(self.speedY) + ")")
                         self.speedX *= -1
+                        if self.speedX < 0:
+                            self.bulletX = map_x * CELL_SIZE -1
+                        else:
+                            self.bulletX = (map_x + 1) * CELL_SIZE + 1
                     else:  
                         print("(" + str(self.speedX) + "," + str(self.speedY) + ")")
                         self.speedY *= -1
+                        if self.speedY < 0:
+                            self.bulletY = map_y * CELL_SIZE - 1
+                        else:
+                            self.bulletY = (map_y + 1) * CELL_SIZE + 1
                         
-                    if self.speedX < 0:
-                        self.bulletX = map_x * CELL_SIZE -10
-                    else:
-                        self.bulletX = (map_x + 1) * CELL_SIZE + 10
-                        
-                    if self.speedY < 0:
-                        self.bulletY = map_y * CELL_SIZE - 10
-                    else:
-                        self.bulletY = (map_y + 1) * CELL_SIZE + 10
-                        
+                    
+                      
                     if MAP[int(self.bulletY // CELL_SIZE)][map_x] == 1:
                         self.isFiring = False
-                else:
-                    self.bulletX += self.speedX
-                    self.bulletY += self.speedY
                 
-   
+                   
+            self.bulletX += self.speedX
+            self.bulletY += self.speedY
             pygame.draw.circle(self.screen, (255, 0, 0), (int(self.bulletX), int(self.bulletY)), 10)
             
     def fire(self, startPos: dict, desPos: tuple):

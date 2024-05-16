@@ -3,7 +3,7 @@ import pygame
 from network import Network
 from game_action import GAME_ACTION
 from objects.tank import Tank
-
+CELL_SIZE = 40
 MAP = [
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
     [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1],
@@ -25,9 +25,6 @@ MAP = [
 
 def drawMap(screen):
 
-    CELL_SIZE = 40
-
-    WHITE = (255, 255, 255)
     GRAY = (150, 150, 150)
 
     for y, row in enumerate(MAP):
@@ -51,8 +48,8 @@ def drawScrore(screen: pygame.Surface, myScore, otherScore):
 def startGame():
     pygame.init()
 
-    screen_width = 800
-    screen_height = 600
+    screen_width = len(MAP[0]) * CELL_SIZE
+    screen_height = len(MAP) * CELL_SIZE
     screen = pygame.display.set_mode((screen_width, screen_height))
     pygame.display.set_caption("Shooting game")
     clock = pygame.time.Clock()

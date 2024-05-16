@@ -1,8 +1,27 @@
 import math
 import time
 import pygame
+MAP = [
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1],
+    [1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1],
+    [1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1],
+    [1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 1],
+    [1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1],
+    [1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1],
+    [1, 0, 1, 1, 1, 0, 1, 0, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1],
+    [1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1],
+    [1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 1],
+    [1, 0, 1, 0, 0, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+    [1, 0, 1, 0, 0, 1, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1],
+    [1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1],
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1],
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+]
 
 CELL_SIZE = 40
+WIDTH = len(MAP[0]) * CELL_SIZE
+HEIGHT = len(MAP) * CELL_SIZE
 class Bullet:
     def __init__(self, screen: pygame.Surface) -> None:
         self.screen = screen
@@ -21,38 +40,19 @@ class Bullet:
             if (current_time - self.fire_time) > 7:  
                 self.isFiring = False
                     
-            # Tính toán chỉ số của ô trong bản đồ
-            map_x = int(self.bulletX // CELL_SIZE)
-            map_y = int(self.bulletY // CELL_SIZE)
-            
-            
-            if map_x >= 0 and map_x < len(MAP[0]) and map_y >= 0 and map_y < len(MAP):
-                if MAP[map_y][map_x] == 1:
-                    # Xác định hướng va chạm
-                    if abs(self.speedX) > abs(self.speedY):  
-                        print("(" + str(self.speedX) + "," + str(self.speedY) + ")")
-                        self.speedX *= -1
-                        if self.speedX < 0:
-                            self.bulletX = map_x * CELL_SIZE -1
-                        else:
-                            self.bulletX = (map_x + 1) * CELL_SIZE + 1
-                    else:  
-                        print("(" + str(self.speedX) + "," + str(self.speedY) + ")")
-                        self.speedY *= -1
-                        if self.speedY < 0:
-                            self.bulletY = map_y * CELL_SIZE - 1
-                        else:
-                            self.bulletY = (map_y + 1) * CELL_SIZE + 1
-                        
-                    
-                      
-                    if MAP[int(self.bulletY // CELL_SIZE)][map_x] == 1:
-                        self.isFiring = False
+            next_x = self.bulletX + self.speedX
+            next_y = self.bulletY + self.speedY
+
+            # Kiểm tra va chạm trái/phải
+            if next_x - 5 < 0 or next_x + 5 > WIDTH or MAP[int(self.bulletY / CELL_SIZE)][int(next_x / CELL_SIZE)] == 1:
+                self.speedX = -self.speedX
+            # Kiểm tra va chạm trên/dưới
+            if next_y - 5 < 0 or next_y + 5 > HEIGHT or MAP[int(next_y / CELL_SIZE)][int(self.bulletX / CELL_SIZE)] == 1:
+                self.speedY = -self.speedY
                 
-                   
             self.bulletX += self.speedX
             self.bulletY += self.speedY
-            pygame.draw.circle(self.screen, (255, 0, 0), (int(self.bulletX), int(self.bulletY)), 10)
+            pygame.draw.circle(self.screen, (255, 0, 0), (int(self.bulletX), int(self.bulletY)), 5)
             
     def fire(self, startPos: dict, desPos: tuple):
         if not self.isFiring:

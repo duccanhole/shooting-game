@@ -12,7 +12,7 @@ class Bullet:
         self.angel = 0
         self.startPos = {'x': 0, 'y': 0}
         self.desPos = [0, 0]
-        self.speed = 4
+        self.speed = 1
         self.fire_time = None
         
     def addFireAction(self, MAP):
@@ -24,22 +24,36 @@ class Bullet:
             # Tính toán chỉ số của ô trong bản đồ
             map_x = int(self.bulletX // CELL_SIZE)
             map_y = int(self.bulletY // CELL_SIZE)
-
-            # Kiểm tra va chạm với tường trong bản đồ
+            
+            
             if map_x >= 0 and map_x < len(MAP[0]) and map_y >= 0 and map_y < len(MAP):
                 if MAP[map_y][map_x] == 1:
-                    if abs(self.speedX) > abs(self.speedY):  # Nếu tốc độ X lớn hơn tốc độ Y, đổi hướng X
+                    # Xác định hướng va chạm
+                    if abs(self.speedX) > abs(self.speedY):  
+                        print("(" + str(self.speedX) + "," + str(self.speedY) + ")")
                         self.speedX *= -1
-                    else:  # Ngược lại, đổi hướng Y
+                    else:  
+                        print("(" + str(self.speedX) + "," + str(self.speedY) + ")")
                         self.speedY *= -1
-                    # Chuyển viên đạn ra khỏi ô tường
+                        
+                    if self.speedX < 0:
+                        self.bulletX = map_x * CELL_SIZE -10
+                    else:
+                        self.bulletX = (map_x + 1) * CELL_SIZE + 10
+                        
+                    if self.speedY < 0:
+                        self.bulletY = map_y * CELL_SIZE - 10
+                    else:
+                        self.bulletY = (map_y + 1) * CELL_SIZE + 10
+                        
+                    if MAP[int(self.bulletY // CELL_SIZE)][map_x] == 1:
+                        self.isFiring = False
+                else:
                     self.bulletX += self.speedX
                     self.bulletY += self.speedY
-                    return  # Ngừng cập nhật vị trí nếu viên đạn va chạm với tường
-            
-            self.bulletX += self.speedX
-            self.bulletY += self.speedY
-            pygame.draw.circle(self.screen, (255, 0, 0), (int(self.bulletX), int(self.bulletY)), 5)
+                
+   
+            pygame.draw.circle(self.screen, (255, 0, 0), (int(self.bulletX), int(self.bulletY)), 10)
             
     def fire(self, startPos: dict, desPos: tuple):
         if not self.isFiring:

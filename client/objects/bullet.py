@@ -56,7 +56,6 @@ class Bullet:
             
     def fire(self, startPos: dict, desPos: tuple):
         if not self.isFiring:
-            print('start fire ...')
             self.bulletX = startPos['x']
             self.bulletY = startPos['y']
             self.startPos = startPos

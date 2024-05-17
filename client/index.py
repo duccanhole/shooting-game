@@ -3,7 +3,7 @@ import pygame
 from network import Network
 from game_action import GAME_ACTION
 from objects.tank import Tank
-
+CELL_SIZE = 40
 MAP = [
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
     [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1],
@@ -25,9 +25,6 @@ MAP = [
 
 def drawMap(screen):
 
-    CELL_SIZE = 40
-
-    WHITE = (255, 255, 255)
     GRAY = (150, 150, 150)
 
     for y, row in enumerate(MAP):
@@ -51,8 +48,8 @@ def drawScrore(screen: pygame.Surface, myScore, otherScore):
 def startGame():
     pygame.init()
 
-    screen_width = 800
-    screen_height = 600
+    screen_width = len(MAP[0]) * CELL_SIZE
+    screen_height = len(MAP) * CELL_SIZE
     screen = pygame.display.set_mode((screen_width, screen_height))
     pygame.display.set_caption("Shooting game")
     clock = pygame.time.Clock()
@@ -60,12 +57,13 @@ def startGame():
     network = Network()
 
     currPlayer = network.getStartData()["data"]["currPlayer"]
-    # currPlayer = 0
 
     print(f"Your player id {currPlayer}")
 
     tank0 = Tank(screen, network, 60, 60, 0, currPlayer)
-    tank1 = Tank(screen, network, screen_width - 100, screen_height - 100, 1, currPlayer)
+    tank1 = Tank(
+        screen, network, screen_width - 100, screen_height - 100, 1, currPlayer
+    )
 
     tank0Score = 0
     tank1Score = 0
@@ -76,6 +74,23 @@ def startGame():
                 if event.type == pygame.QUIT:
                     running = False
                     pygame.quit()
+
+            if tank0Score == 10 or tank1Score == 10:
+                screen.fill("black")
+                text = ""
+                if tank0Score == 10 and currPlayer == 0:
+                    text = "You win !!!"
+                else:
+                    text = "You lose !!!"
+                text_color = (255, 255, 255)
+                font = pygame.font.Font(None, 75)
+                text_surface = font.render(text, True, text_color)
+                text_rect = text_surface.get_rect()
+                text_rect.center = (screen.get_width() / 2, screen.get_height() / 2)
+                screen.blit(text_surface, text_rect)
+                pygame.display.flip()
+                clock.tick(60)
+                continue
 
             screen.fill("white")
 
@@ -133,7 +148,7 @@ def startGame():
                         tank1.bullet.update(data["x"], data["y"])
                         if data["x"] + data["y"] == 0:
                             tank1.bullet.isFiring = False
-            
+
             sendScoreData = {
                 "action": GAME_ACTION.SCORE.value,
                 "data": [tank0Score, tank1Score],
@@ -156,19 +171,13 @@ def startGame():
                         tank1.updateMovement(700, 500)
                         tank1.bullet.update(0, 0)
                         tank1.bullet.isFiring = False
-            
+
             drawScrore(
                 screen,
                 tank0Score if currPlayer == 0 else tank1Score,
                 tank1Score if currPlayer == 0 else tank0Score,
             )
 
-            if tank0Score == 10 or tank1Score == 10:
-                running = False
-                if tank0Score == 10 and currPlayer == 0:
-                    print("You win !!!")
-                else:
-                    print("You lose !!!")
             pygame.display.flip()
             clock.tick(60)
 

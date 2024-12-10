@@ -1,3 +1,3 @@
 # shooting-game
 
-[File Bao cao](./Báo_Cáo_PTTKMNM.pdf)
+[File Bao cao](./bao_cao.docx)

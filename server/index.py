@@ -20,7 +20,13 @@ except socket.error as e:
     str(e)
 
 s.listen(2)
+
+# Get the local hostname
+hostname = socket.gethostname()
+# Get the local IP address
+local_ip = socket.gethostbyname(hostname)
 print("Waiting for a connection, Server Started")
+print(f"Server start at: {local_ip}:{8080}")
 
 
 def threaded_client(conn: socket, addr, player: int):

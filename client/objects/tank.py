@@ -69,9 +69,6 @@ class Tank:
                 self.bullet.fire({"x": self.tankX+ self.width // 2, "y": self.tankY+ self.height // 2}, mouse_pos)
 
     def addHitting(self, bullet: Bullet):
-        # tankRect = pygame.Rect(self.tankX, self.tankY, self.width + 5, self.height + 5)
-        # bulletRect = bullet.getRect()
-        # collide = bulletRect.colliderect(tankRect)
         distance1 = math.sqrt((self.tankX + 15 - bullet.bulletX) ** 2 + (self.tankY + 15 - bullet.bulletY) ** 2)
         now = time.time()
         distance2 = math.sqrt((self.tankX + 15 - self.bullet.bulletX) ** 2 + (self.tankY + 15 - self.bullet.bulletY) ** 2)

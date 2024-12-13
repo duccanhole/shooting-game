@@ -29,19 +29,26 @@ def drawScrore(screen: pygame.Surface, myScore, otherScore):
 
 
 def startGame():
+    network = Network()
+    
+    address = input("Please enter the address of server: ")
+    print(f"connect to {address}")
+    network.connect(address)
+    
+    currPlayer = network.getStartData()["data"]["currPlayer"]
+    
+    if currPlayer == -1: 
+        print("Server is full now, please wait ...")
+        return
+    
+    print(f"Your player id {currPlayer}")
+    
     pygame.init()
-
     screen_width = len(MAP[0]) * CELL_SIZE
     screen_height = len(MAP) * CELL_SIZE
     screen = pygame.display.set_mode((screen_width, screen_height))
     pygame.display.set_caption("Shooting game")
     clock = pygame.time.Clock()
-
-    network = Network()
-
-    currPlayer = network.getStartData()["data"]["currPlayer"]
-
-    print(f"Your player id {currPlayer}")
 
     tank0 = Tank(screen, network, 60, 60, 0, currPlayer)
     tank1 = Tank(
@@ -125,11 +132,11 @@ def startGame():
                     data = receiveBulletData.get("data")
                     if data["player"] == 0:
                         tank0.bullet.update(data["x"], data["y"])
-                        if data["x"] + data["y"] == 0:
+                        if data["x"] + data["y"] <= 0:
                             tank0.bullet.isFiring = False
                     else:
                         tank1.bullet.update(data["x"], data["y"])
-                        if data["x"] + data["y"] == 0:
+                        if data["x"] + data["y"] <= 0:
                             tank1.bullet.isFiring = False
 
             sendScoreData = {
@@ -149,10 +156,10 @@ def startGame():
                         tank0Score = data[0]
                         tank1Score = data[1]
                         tank0.updateMovement(60, 60)
-                        tank0.bullet.update(0, 0)
+                        tank0.bullet.update(-1, -1)
                         tank0.bullet.isFiring = False
                         tank1.updateMovement(700, 500)
-                        tank1.bullet.update(0, 0)
+                        tank1.bullet.update(-1, -1)
                         tank1.bullet.isFiring = False
 
             drawScrore(

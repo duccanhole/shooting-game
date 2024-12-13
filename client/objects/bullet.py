@@ -21,6 +21,8 @@ class Bullet:
         if self.isFiring: 
             current_time = time.time()
             if (current_time - self.fire_time) > 5:  
+                self.bulletX = -1
+                self.bulletY = -1
                 self.isFiring = False
                     
             next_x = self.bulletX + self.speedX
@@ -51,6 +53,7 @@ class Bullet:
             distance = math.sqrt(dx**2 + dy**2)
             self.speedX = self.speed * (dx / distance)
             self.speedY = self.speed * (dy / distance)
+            
     def getRect(seft): 
         return pygame.Rect(seft.bulletX, seft.bulletY, 5, 5)
     
